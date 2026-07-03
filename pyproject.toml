@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "activation-guard"
+version = "0.1.0"
+description = "Training-free LLM guardrail framework based on internal representations"
+readme = "README.md"
+authors = [
+    {name = "Pedro Sordo Martínez (Sil)", email = "amurlaniakea@example.com"},
+]
+license = {text = "AGPL-3.0"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.110.0",
+    "pydantic>=2.0.0",
+    "transformers>=4.38.0",
+    "sentence-transformers>=2.2.0",
+    "scikit-learn>=1.3.0",
+    "numpy>=1.24.0",
+    "httpx>=0.24.0",
+    "pydantic-settings>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "black>=23.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/amurlaniakea/activation-guard"
+Repository = "https://github.com/amurlaniakea/activation-guard"
+Issues = "https://github.com/amurlaniakea/activation-guard/issues"
+
+[project.scripts]
+activation-guard = "activation_guard.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "UP", "N", "B", "A", "C4", "DTZ", "PYI", "S", "BLE", "FBT", "INP", "PIE", "T20", "ARG", "PTH", "RUF"]
+ignore = ["E501", "B008"]
+
+[tool.coverage.run]
+source = ["activation_guard"]
+omit = ["*/tests/*", "*/venv/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "--cov=activation_guard --cov-report=term-missing"

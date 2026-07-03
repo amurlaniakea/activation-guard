@@ -1,0 +1,45 @@
+from fastapi import FastAPI, HTTPException
+
+from .core.guardrail import Guardrail
+from .models.requests import GuardrailRequest, GuardrailResponse
+
+app = FastAPI(
+    title="activation-guard",
+    description="Training-free LLM guardrail framework based on internal representations",
+    version="0.1.0",
+)
+
+# Instancia global del guardrail (en producción, usar dependency injection)
+guardrail = Guardrail()
+
+
+@app.get("/")
+async def root():
+    return {"message": "activation-guard API", "version": "0.1.0"}
+
+
+@app.post("/v1/guard", response_model=GuardrailResponse)
+async def guard_prompt(request: GuardrailRequest):
+    """Verifica si un prompt es seguro usando representaciones internas de LLM."""
+    try:
+        result = guardrail.check(request)
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
+
+
+@app.post("/v1/guard/batch", response_model=list[GuardrailResponse])
+async def guard_batch(requests: list[GuardrailRequest]):
+    """Verifica múltiples prompts de una vez."""
+    try:
+        results = [guardrail.check(req) for req in requests]
+        return results
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error en batch: {str(e)}")
+
+
+@app.get("/v1/health")
+async def health_check():
+    return {"status": "healthy", "service": "activation-guard"}
