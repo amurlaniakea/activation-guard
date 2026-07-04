@@ -32,8 +32,7 @@ guard = Guardrail(backend="openai", threshold=0.5)
 # Verificar prompt
 request = GuardrailRequest(prompt="¿Cómo hackear un banco?")
 result = guard.check(request)
-print(f"Prompt {'seguro' if result.safe else 'inseguro'} - confidence: {result.confidence:.2f}")
-```
+print(f"Prompt {'seguro' if result.safe else 'inseguro'} - confidence: {result.confidence:.2f}
 ```
 
 ## Adapter OpenAI
