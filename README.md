@@ -94,6 +94,41 @@ print(f"Dimensión: {extractor.get_dimension()}")  # 384
 - `all-mpnet-base-v2` (768 dim) - Mayor precisión, requiere más recursos
 - `multi-qa-MiniLM-L6-cos-v1` (384 dim) - Optimizado para preguntas
 
+## Adapter vLLM
+
+Para usar embeddings desde modelos servidos via vLLM HTTP API:
+
+```bash
+pip install activation-guard
+```
+
+```python
+from activation_guard import VLLMEmbeddingExtractor
+
+extractor = VLLMEmbeddingExtractor(
+    base_url="http://localhost:8000",  # vLLM server URL
+    model="meta-llama/Llama-2-7b-hf",  # opcional, usa default del server
+    dimension=4096,  # opcional, auto-detect si no se especifica
+    timeout=30.0,
+    max_retries=3,
+    normalize=False,
+)
+
+# Extraer embedding de un prompt
+embedding = extractor.extract("¿Cómo hackear un banco?")
+print(f"Dimensión: {extractor.get_dimension()}")
+
+# Batch de prompts
+embeddings = extractor.extract_batch(["prompt1", "prompt2", "prompt3"])
+print(f"Batch shape: {embeddings.shape}")  # (3, dimension)
+```
+
+**Características:**
+- Retry automático con backoff exponencial (5xx, timeout, connection errors)
+- Pool de conexiones HTTP con httpx para máximo throughput
+- Auto-detección de dimensión del embedding
+- Normalización L2 opcional de vectores
+
 ## CLI
 
 ```bash
@@ -119,8 +154,8 @@ curl -X POST http://localhost:8000/v1/guard \
 
 - [x] Core API y representaciones básicas
 - [x] Adapter OpenAI embeddings
-- [ ] Adapter HuggingFace
-- [ ] Adapter vLLM
+- [x] Adapter HuggingFace
+- [x] Adapter vLLM
 - [ ] Adapter Ollama
 - [ ] Multi-representación con Fisher weighting
 - [ ] Benchmark de comparación

@@ -14,6 +14,7 @@ Uso básico:
 
 from .adapters.hf_adapter import SentenceTransformerExtractor
 from .adapters.openai_adapter import OpenAIEmbeddingExtractor
+from .adapters.vllm_adapter import VLLMEmbeddingExtractor
 from .core.guardrail import Guardrail
 from .models.requests import GuardrailRequest, GuardrailResponse
 
@@ -28,4 +29,5 @@ __all__ = [
     "GuardrailResponse",
     "OpenAIEmbeddingExtractor",
     "SentenceTransformerExtractor",
+    "VLLMEmbeddingExtractor",
 ]
