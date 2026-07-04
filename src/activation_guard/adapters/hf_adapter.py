@@ -93,6 +93,7 @@ class SentenceTransformerExtractor(RepresentationExtractor):
         embedding = self.model.encode(
             [prompt],
             normalize_embeddings=self.normalize_embeddings,
+            show_progress_bar=False,
         )
         return embedding[0].astype(np.float32)
 
@@ -116,5 +117,6 @@ class SentenceTransformerExtractor(RepresentationExtractor):
             prompts,
             normalize_embeddings=self.normalize_embeddings,
             batch_size=batch_size,
+            show_progress_bar=False,
         )
         return embeddings.astype(np.float32)
