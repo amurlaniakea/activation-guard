@@ -24,12 +24,6 @@ pip install activation-guard
 ## Uso básico
 
 ```python
-from activation_guard import Guardrail
-
-# Crear guardrail
-guard = Guardrail(backend="openai", threshold=0.5)
-
-# Verificar prompt
 from activation_guard import Guardrail, GuardrailRequest
 
 # Crear guardrail
@@ -39,7 +33,7 @@ guard = Guardrail(backend="openai", threshold=0.5)
 request = GuardrailRequest(prompt="¿Cómo hackear un banco?")
 result = guard.check(request)
 print(f"Prompt {'seguro' if result.safe else 'inseguro'} - confidence: {result.confidence:.2f}")
-print(f"Prompt {'seguro' if result.safe else 'inseguro'} - confidence: {result.confidence:.2f}")
+```
 ```
 
 ## Adapter OpenAI
