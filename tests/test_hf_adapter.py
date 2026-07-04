@@ -81,7 +81,7 @@ class TestSentenceTransformerExtractor:
         assert result.shape == (3, 2)
         assert result.dtype == np.float32
         mock_instance.encode.assert_called_once_with(
-            prompts, normalize_embeddings=True, batch_size=32, show_progress=False
+            prompts, normalize_embeddings=True, batch_size=32
         )
 
     def test_import_error_when_not_installed(self):
