@@ -13,8 +13,7 @@ app = FastAPI(
 from .adapters.hf_adapter import SentenceTransformerExtractor
 extractor = SentenceTransformerExtractor()
 guardrail = Guardrail()
-guardrail.register_extractor('openai', extractor)
-guardrail.add_examples(domain="default", safe_examples=["Hola mundo"], unsafe_examples=["Texto malicioso"])
+guardrail.register_extractor('default', extractor)
 
 
 @app.get("/")

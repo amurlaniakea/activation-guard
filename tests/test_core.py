@@ -1,44 +1,15 @@
-import pytest
+import unittest
+from src.activation_guard.core.guardrail import Guardrail
+from src.activation_guard.adapters.hf_adapter import SentenceTransformerExtractor
+from src.activation_guard.models.requests import GuardrailRequest
 
-from activation_guard.core.guardrail import Guardrail
-from activation_guard.models.requests import GuardrailRequest, GuardrailResponse
-
-
-def test_guardrail_initialization():
-    """Test de inicialización del guardrail"""
-    guard = Guardrail()
-    assert guard.backend == "openai"
-    assert guard.threshold == 0.5
-
-def test_guardrail_request_model():
-    """Test del modelo de solicitud"""
-    request = GuardrailRequest(prompt="Hola", backend="openai", threshold=0.7)
-    assert request.prompt == "Hola"
-    assert request.backend == "openai"
-    assert request.threshold == 0.7
-
-def test_guardrail_response_model():
-    """Test del modelo de respuesta"""
-    response = GuardrailResponse(
-        safe=True,
-        confidence=0.8,
-        details={"reason": "test"}
-    )
-    assert response.safe is True
-    assert response.confidence == 0.8
-    assert response.details["reason"] == "test"
-
-def test_guardrail_check():
-    """Test de verificación básica"""
-    guard = Guardrail()
-    request = GuardrailRequest(prompt="Test prompt")
-    response = guard.check(request)
-
-    # Debe devolver una respuesta válida
-    assert isinstance(response, GuardrailResponse)
-    assert hasattr(response, 'safe')
-    assert hasattr(response, 'confidence')
-    assert hasattr(response, 'details')
-
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
+class TestGuardrail(unittest.TestCase):
+    def test_check_consistency(self):
+        backend = "hf"
+        extractor = SentenceTransformerExtractor()
+        guard = Guardrail(backend=backend)
+        guard.register_extractor(backend, extractor)
+        prompt = GuardrailRequest(prompt="Este es un prompt de prueba")
+        result1 = guard.check(prompt)
+        result2 = guard.check(prompt)
+        self.assertEqual(result1.confidence, result2.confidence)

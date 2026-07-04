@@ -29,8 +29,8 @@ class Guardrail:
             raise ValueError(f"No hay extractor registrado para {self.backend}")
 
         # En MVP, usamos representaciones aleatorias
-        safe_vectors = np.random.rand(len(safe_examples), extractor.get_dimension())
-        unsafe_vectors = np.random.rand(len(unsafe_examples), extractor.get_dimension())
+        safe_vectors = extractor.extract_batch(safe_examples)
+        unsafe_vectors = extractor.extract_batch(unsafe_examples)
 
         self.example_vectors[domain] = np.vstack([safe_vectors, unsafe_vectors])
         self.example_labels[domain] = np.array([1] * len(safe_examples) + [0] * len(unsafe_examples))
@@ -49,7 +49,7 @@ class Guardrail:
                 raise ValueError(f"Backend no soportado: {request.backend}")
 
             # En MVP, usamos representación aleatoria
-            representation = np.random.rand(extractor.get_dimension())
+            representation = extractor.extract(request.prompt)
 
             # Clasificación con kNN
             domain = request.domain or "default"

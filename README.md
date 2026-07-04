@@ -1,7 +1,7 @@
 # activation-guard
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Tests](https://img.shields.io/endpoint?url=https:// Shield)](https://github.com/amurlaniakea/activation-guard/actions)
+[![Tests](https://github.com/amurlaniakea/activation-guard/actions/workflows/python-package.yml/badge.svg)](https://github.com/amurlaniakea/activation-guard/actions/workflows/python-package.yml)
 [![codecov](https://img.shields.io/codecov/c/github/amurlaniakea/activation-guard)](https://codecov.io/gh/amurlaniakea/activation-guard)
 
 Framework de guardrail **training-free** basado en representaciones internas de LLMs.
@@ -30,7 +30,15 @@ from activation_guard import Guardrail
 guard = Guardrail(backend="openai", threshold=0.5)
 
 # Verificar prompt
-result = guard.check("¿Cómo hackear un banco?")
+from activation_guard import Guardrail, GuardrailRequest
+
+# Crear guardrail
+guard = Guardrail(backend="openai", threshold=0.5)
+
+# Verificar prompt
+request = GuardrailRequest(prompt="¿Cómo hackear un banco?")
+result = guard.check(request)
+print(f"Prompt {'seguro' if result.safe else 'inseguro'} - confidence: {result.confidence:.2f}")
 print(f"Prompt {'seguro' if result.safe else 'inseguro'} - confidence: {result.confidence:.2f}")
 ```
 
@@ -65,7 +73,6 @@ print(f"Batch shape: {embeddings.shape}")  # (3, 1536)
 Para usar embeddings locales con Sentence Transformers:
 
 ```bash
-pip install activation-guard[hf]
 ```
 
 ```python
@@ -171,4 +178,4 @@ curl -X POST http://localhost:8000/v1/guard \
 
 ## Licencia
 
-AGPL-3.0 — Pedro Sordo Martínez (Sil)
+AGPL-3.0 — Pedro Sordo Martínez (Sil) — amurlaniakea@gmail.com

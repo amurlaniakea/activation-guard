@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Training-free LLM guardrail framework based on internal representations"
 readme = "README.md"
 authors = [
-    {name = "Pedro Sordo Martínez (Sil)", email = "amurlaniakea@example.com"},
+    {name = "Pedro Sordo Martínez (Sil)", email = "amurlaniakea@gmail.com"},
 ]
 license = {text = "AGPL-3.0"}
 classifiers = [

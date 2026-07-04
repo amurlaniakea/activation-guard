@@ -3,8 +3,8 @@
 
 import argparse
 import sys
-
 from activation_guard import Guardrail, GuardrailRequest
+from activation_guard.adapters.hf_adapter import SentenceTransformerExtractor
 
 
 def main():
@@ -17,6 +17,14 @@ def main():
 
     args = parser.parse_args()
 
+    # Registrar extractor por defecto
+    extractor = SentenceTransformerExtractor()
+    guard = Guardrail(backend=args.backend)
+    guard.register_extractor(args.backend, extractor)
+
+    # Agregar ejemplos safe/unsafe
+    guard.add_examples(domain="default", safe_examples=["Hola mundo"], unsafe_examples=["Texto malicioso"])
+
     request = GuardrailRequest(
         prompt=args.prompt,
         backend=args.backend,
@@ -24,7 +32,6 @@ def main():
         domain=args.domain
     )
 
-    guard = Guardrail(backend=args.backend)
     response = guard.check(request)
 
     if args.verbose:

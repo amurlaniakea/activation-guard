@@ -8,4 +8,5 @@ __all__ = [
     "OpenAIEmbeddingExtractor",
     "SentenceTransformerExtractor",
     "VLLMEmbeddingExtractor",
+    "OllamaEmbeddingExtractor",
 ]
