@@ -34,6 +34,32 @@ result = guard.check("¿Cómo hackear un banco?")
 print(f"Prompt {'seguro' if result.safe else 'inseguro'} - confidence: {result.confidence:.2f}")
 ```
 
+## Adapter OpenAI
+
+Para usar embeddings de OpenAI:
+
+```bash
+pip install activation-guard[openai]
+export OPENAI_API_KEY="sk-..."
+```
+
+```python
+from activation_guard import OpenAIEmbeddingExtractor
+
+extractor = OpenAIEmbeddingExtractor(
+    model="text-embedding-3-small",  # o text-embedding-3-large
+    dimension=1536,  # opcional, default según modelo
+)
+
+# Extraer embedding de un prompt
+embedding = extractor.extract("¿Cómo hackear un banco?")
+print(f"Dimensión: {embedding.shape}")  # (1536,)
+
+# Batch de prompts
+embeddings = extractor.extract_batch(["prompt1", "prompt2", "prompt3"])
+print(f"Batch shape: {embeddings.shape}")  # (3, 1536)
+```
+
 ## CLI
 
 ```bash
@@ -58,7 +84,7 @@ curl -X POST http://localhost:8000/v1/guard \
 ## Roadmap
 
 - [x] Core API y representaciones básicas
-- [ ] Adapter OpenAI embeddings
+- [x] Adapter OpenAI embeddings
 - [ ] Adapter HuggingFace
 - [ ] Adapter vLLM
 - [ ] Adapter Ollama

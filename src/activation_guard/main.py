@@ -25,9 +25,9 @@ async def guard_prompt(request: GuardrailRequest):
         result = guardrail.check(request)
         return result
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except (KeyError, IndexError, TypeError) as e:
+        raise HTTPException(status_code=500, detail=f"Error interno: {e!s}") from e
 
 
 @app.post("/v1/guard/batch", response_model=list[GuardrailResponse])
@@ -36,8 +36,8 @@ async def guard_batch(requests: list[GuardrailRequest]):
     try:
         results = [guardrail.check(req) for req in requests]
         return results
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error en batch: {str(e)}")
+    except (ValueError, KeyError, IndexError, TypeError) as e:
+        raise HTTPException(status_code=500, detail=f"Error en batch: {e!s}") from e
 
 
 @app.get("/v1/health")

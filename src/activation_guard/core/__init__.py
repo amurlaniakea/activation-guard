@@ -1,7 +1,7 @@
 """Core module for activation-guard"""
 
+from .dummy_extractor import DummyExtractor
 from .extractor import RepresentationExtractor
 from .guardrail import Guardrail
-from .dummy_extractor import DummyExtractor
 
-__all__ = ["RepresentationExtractor", "Guardrail", "DummyExtractor"]
+__all__ = ["DummyExtractor", "Guardrail", "RepresentationExtractor"]

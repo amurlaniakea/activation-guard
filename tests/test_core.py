@@ -1,6 +1,8 @@
 import pytest
+
 from activation_guard.core.guardrail import Guardrail
 from activation_guard.models.requests import GuardrailRequest, GuardrailResponse
+
 
 def test_guardrail_initialization():
     """Test de inicialización del guardrail"""
@@ -31,7 +33,7 @@ def test_guardrail_check():
     guard = Guardrail()
     request = GuardrailRequest(prompt="Test prompt")
     response = guard.check(request)
-    
+
     # Debe devolver una respuesta válida
     assert isinstance(response, GuardrailResponse)
     assert hasattr(response, 'safe')

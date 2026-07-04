@@ -36,6 +36,9 @@ dev = [
     "mypy>=1.0.0",
     "black>=23.0.0",
 ]
+openai = [
+    "openai>=1.0.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/amurlaniakea/activation-guard"
@@ -55,6 +58,10 @@ target-version = "py311"
 [tool.ruff.lint]
 select = ["E", "W", "F", "I", "UP", "N", "B", "A", "C4", "DTZ", "PYI", "S", "BLE", "FBT", "INP", "PIE", "T20", "ARG", "PTH", "RUF"]
 ignore = ["E501", "B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["S101"]  # asserts en tests son normales
+"src/activation_guard/cli.py" = ["T201"]  # CLI necesita prints
 
 [tool.coverage.run]
 source = ["activation_guard"]
