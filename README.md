@@ -60,6 +60,40 @@ embeddings = extractor.extract_batch(["prompt1", "prompt2", "prompt3"])
 print(f"Batch shape: {embeddings.shape}")  # (3, 1536)
 ```
 
+## Adapter HuggingFace
+
+Para usar embeddings locales con Sentence Transformers:
+
+```bash
+pip install activation-guard[hf]
+```
+
+```python
+from activation_guard import SentenceTransformerExtractor
+
+extractor = SentenceTransformerExtractor(
+    model="all-MiniLM-L6-v2",  # o all-mpnet-base-v2, multi-qa-MiniLM-L6-cos-v1
+    device="cpu",  # "cuda" si tienes GPU, None para auto-detect
+    normalize_embeddings=True,
+)
+
+# Extraer embedding de un prompt
+embedding = extractor.extract("¿Cómo hackear un banco?")
+print(f"Dimensión: {embedding.shape}")  # (384,) para MiniLM
+
+# Batch de prompts
+embeddings = extractor.extract_batch(["prompt1", "prompt2", "prompt3"])
+print(f"Batch shape: {embeddings.shape}")  # (3, 384)
+
+# Obtener dimensión del modelo
+print(f"Dimensión: {extractor.get_dimension()}")  # 384
+```
+
+**Modelos recomendados:**
+- `all-MiniLM-L6-v2` (384 dim) - Rápido y ligero, ideal para producción
+- `all-mpnet-base-v2` (768 dim) - Mayor precisión, requiere más recursos
+- `multi-qa-MiniLM-L6-cos-v1` (384 dim) - Optimizado para preguntas
+
 ## CLI
 
 ```bash

@@ -12,6 +12,7 @@ Uso básico:
     print(f"Prompt {'seguro' if result.safe else 'inseguro'} - confidence: {result.confidence:.2f}")
 """
 
+from .adapters.hf_adapter import SentenceTransformerExtractor
 from .adapters.openai_adapter import OpenAIEmbeddingExtractor
 from .core.guardrail import Guardrail
 from .models.requests import GuardrailRequest, GuardrailResponse
@@ -26,4 +27,5 @@ __all__ = [
     "GuardrailRequest",
     "GuardrailResponse",
     "OpenAIEmbeddingExtractor",
+    "SentenceTransformerExtractor",
 ]
